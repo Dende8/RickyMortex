@@ -9,12 +9,12 @@ Aplicación web interactiva construida con **Streamlit** para explorar, filtrar 
 ```
 RickyMortex/
 ├── app.py                 # Aplicación Streamlit
-├── prep_datos.ipnyb          # Script de extracción de datos vía API
+├── prep_datos.ipnyb       # Código de extracción de datos vía API
 ├── RMcharacters.csv       # Dataset generado (se crea al ejecutar extraer_datos.py)
 ├── icon.png               # Icono de la pestaña del navegador
-├── rick.png                # Icono usado en el banner principal
-├── morty.png               # Icono usado en el banner principal
-└── requirements.txt
+├── rick.png               # Icono usado en el banner principal
+├── morty.png              # Icono usado en el banner principal
+└── requirements.txt       # Archivo con las dependencias
 ```
 ---
 
