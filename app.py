@@ -1,7 +1,7 @@
 import streamlit as st
 from pathlib import Path
 import pandas as pd
-import plotly.graph_objects as go
+import plotly.express as px
 import base64
 
 st.set_page_config(page_title="RickyMortex", page_icon="icon.png", layout="wide")
@@ -54,7 +54,7 @@ if estados_seleccionados:  # si al menos uno está marcado
     f = f[f["status"].isin(estados_seleccionados)]
 f = f[f["n_episodes"] >= total_epsd]
 
-tab_inicio, tab_dex, tab_ficha = st.tabs(["Inicio", "RickyMortex", "Ficha"], on_change=on_tab_change, key="tab_activa")
+tab_inicio, tab_dex, tab_ficha, tab_stats = st.tabs(["Inicio", "RickyMortex", "Ficha", "Estadísticas"], on_change=on_tab_change, key="tab_activa")
 
 with tab_inicio:
     # f""" ... """ -> f-string multilínea: {len(df)} se sustituye por el número real (151, 386...)
@@ -127,3 +127,51 @@ with tab_ficha:
         st.write(f"**Origen:** {p['origin']}")
         st.write(f"**Ubicación:** {p['location']}")
         st.write(f"**Episodios:** {p['n_episodes']}")
+
+with tab_stats:
+    st.subheader("Estado de los personajes")
+
+    status_counts = df["status"].value_counts().reset_index()
+    status_counts.columns = ["status", "count"]
+
+    fig_status = px.pie(
+        status_counts, names="status", values="count", hole=0.45,
+        color="status",
+        color_discrete_map={"Alive": "#4CAF50", "Dead": "#E53935", "unknown": "#9E9E9E"}
+    )
+    st.plotly_chart(fig_status, use_container_width=True)
+
+    st.subheader("Especies más comunes")
+
+    species_counts = df["species"].value_counts()
+    top_species = species_counts.head(10).reset_index()
+    top_species.columns = ["species", "count"]
+
+    fig_species = px.bar(
+        top_species, x="count", y="species", orientation="h"
+    )
+    fig_species.update_layout(yaxis={"categoryorder": "total ascending"})
+    st.plotly_chart(fig_species, use_container_width=True)
+
+    st.subheader("Origen y ubicación")
+    col1, col2 = st.columns(2)
+
+with col1:
+    origin_counts = df[df["origin"] != "unknown"]["origin"].value_counts().head(10).reset_index()
+    origin_counts.columns = ["origin", "count"]
+    fig_origin = px.bar(
+           origin_counts, x="count", y="origin", orientation="h",
+        title="Top 10 lugares de origen"
+    )
+    fig_origin.update_layout(yaxis={"categoryorder": "total ascending"})
+    st.plotly_chart(fig_origin, use_container_width=True)
+
+with col2:
+    location_counts = df[df["location"] != "unknown"]["location"].value_counts().head(10).reset_index()
+    location_counts.columns = ["location", "count"]
+    fig_location = px.bar(
+        location_counts, x="count", y="location", orientation="h",
+        title="Top 10 ubicaciones"
+    )
+    fig_location.update_layout(yaxis={"categoryorder": "total ascending"})
+    st.plotly_chart(fig_location, use_container_width=True)
