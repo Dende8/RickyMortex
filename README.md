@@ -1,4 +1,4 @@
-# 🛸 RickyMortex
+# 🛸 RickyMortex (https://rickymortex.streamlit.app/)
 
 Aplicación web interactiva construida con **Streamlit** para explorar, filtrar y visualizar estadísticas de los personajes del universo de *Rick y Morty*, usando datos obtenidos en tiempo real desde la [API pública de Rick y Morty](https://rickandmortyapi.com).
 
